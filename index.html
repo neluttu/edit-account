@@ -41,9 +41,8 @@
             </label>
             <span class="tracking-[0.25rem] font-semibold block cursor-pointer">DATE OF BIRTH</span>
 
-            <div class="flex items-center justify-center w-full gap-4 m-auto">
-                <select class="w-full p-4 bg-transparent placeholder:text-[#8182a8] border border-[#4a4a75] mt-2 mb-6 outline-[#747ad1] font-semibold">
-                    <option>Day</option>
+            <div  class="flex items-center justify-center w-full gap-4 m-auto">
+                <select onchange="verificaSelectiile()" id="day" class="w-full p-4 bg-transparent placeholder:text-[#8182a8] border border-[#4a4a75] mt-2 mb-6 outline-[#747ad1] font-semibold">
                     <option>01</option>
                     <option>02</option>
                     <option>03</option>
@@ -78,24 +77,22 @@
                     <option>31</option>
                 </select>
 
-                <select class="w-full p-4 bg-transparent placeholder:text-[#8182a8] border border-[#4a4a75] mt-2 mb-6 outline-[#747ad1] font-semibold">
-                    <option>Month</option>
-                    <option>01</option>
-                    <option>02</option>
-                    <option>03</option>
-                    <option>04</option>
-                    <option>05</option>
-                    <option selected>06</option>
-                    <option>07</option>
-                    <option>08</option>
-                    <option>09</option>
-                    <option>10</option>
-                    <option>11</option>
-                    <option>12</option>
+                <select onchange="verificaSelectiile()" id="month" class="w-full p-4 bg-transparent placeholder:text-[#8182a8] border border-[#4a4a75] mt-2 mb-6 outline-[#747ad1] font-semibold">
+                    <option value="1">January</option>
+                    <option value="2">February</option>
+                    <option value="3">March</option>
+                    <option value="4">April</option>
+                    <option value="5">May</option>
+                    <option value="6" selected>June</option>
+                    <option value="7">July</option>
+                    <option value="8">August</option>
+                    <option value="9">September</option>
+                    <option value="10">October</option>
+                    <option value="11">November</option>
+                    <option value="12">December</option>
                 </select>
                 
-                <select id="year" class="w-full p-4 bg-transparent placeholder:text-[#8182a8] border border-[#4a4a75] mt-2 mb-6 outline-[#747ad1] font-semibold">
-                    <option>Year</option>
+                <select onchange="verificaSelectiile()" id="year" class="w-full p-4 bg-transparent placeholder:text-[#8182a8] border border-[#4a4a75] mt-2 mb-6 outline-[#747ad1] font-semibold">
                 </select>
                 <script>
                     var selectAni = document.getElementById("year");
@@ -108,8 +105,42 @@
                       if (an === 1983) option.selected = true;
                       selectAni.appendChild(option);
                     }
+                    
                   </script>
             </div>
+            <span id="varsta" class="mt-3 font-semibold">40 years, 0 months and 1 days old.</span>
+            <script>
+            var selectZiua = document.getElementById("day");
+            var selectLuna = document.getElementById("month");
+            var selectAnul = document.getElementById("year");
+            var spanVarsta = document.getElementById("varsta");
+
+            function verificaSelectiile() {
+                if (selectZiua.value && selectLuna.value && selectAnul.value) {
+                calculVarsta();
+                } else 
+                spanVarsta.textContent = "";
+            }
+
+            function calculVarsta() {
+                var ziuaSelectata = selectZiua.value;
+                var lunaSelectata = selectLuna.value;
+                var anulSelectat = selectAnul.value;
+
+                var dataNasterii = new Date(anulSelectat, lunaSelectata - 1, ziuaSelectata);
+                var dataCurenta = new Date();
+
+                var varstaAni = dataCurenta.getFullYear() - dataNasterii.getFullYear();
+                var varstaLuni = dataCurenta.getMonth() - dataNasterii.getMonth();
+                var varstaZile = dataCurenta.getDate() - dataNasterii.getDate();
+
+                if (varstaLuni < 0 || (varstaLuni === 0 && varstaZile < 0)) {
+                varstaAni--;
+                }
+
+                spanVarsta.textContent = varstaAni + " years, " + varstaLuni + " months and " + varstaZile + " days old.";
+            }
+            </script>
         </div>
         <div class="flex items-center justify-evenly w-full gap-6 bg-[#2b2c50] pt-8 pb-8 px-10">
             <button class="bg-[#34355b] text-[#dcddff] font-semibold text-xl w-full py-4 rounded-md hover:bg-[#242546] transition-all duration-150 ease-in">Cancel</button>
